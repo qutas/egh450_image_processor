@@ -31,9 +31,9 @@ class ImageProcessor():
 		# Do processing here!
 		# ===================
 		(rows,cols,channels) = cv_image.shape
-		if cols > 70 and rows > 70 :
+		if cols > 20 and rows > 20 :
 			# Draw circle at position (50,50), with diameter (10), bgr value (0,0,255), and thickness (2)
-			cv2.circle(cv_image, (50,50), 10, (0, 0, 255), 2)
+			cv2.circle(cv_image, (cols/2,rows/2), 100, (0, 0, 255), 10)
 		# ===================
 
 		#Convert CV image to ROS image and publish
