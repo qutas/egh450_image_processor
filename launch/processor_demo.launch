@@ -2,7 +2,7 @@
 <launch>
 	<!-- Processor Node -->
 	<node pkg="egh450_image_processor" type="processor" name="processor" clear_params="true" output="screen">
-		<remap from="~/input/image_raw/compressed" to="/cv_camera/image_raw/compressed" />
+		<remap from="~input/image_raw/compressed" to="/cv_camera/image_raw/compressed" />
 	</node>
 
 	<!-- Video->Image Node -->
