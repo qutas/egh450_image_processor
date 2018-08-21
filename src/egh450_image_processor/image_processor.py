@@ -7,6 +7,9 @@ from std_msgs.msg import String
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 
+# will need to change the location to your own environment
+sign_cascade = cv2.CascadeClassifier('/home/kyle/catkin_ws/src/egh450_image_processor/data/cascade.xml')
+
 class ImageProcessor():
 	def __init__(self):
 		#Set up the CV Bridge
@@ -30,10 +33,13 @@ class ImageProcessor():
 		# ===================
 		# Do processing here!
 		# ===================
-		(rows,cols,channels) = cv_image.shape
-		if cols > 20 and rows > 20 :
-			# Draw circle at position (50,50), with diameter (10), bgr value (0,0,255), and thickness (2)
-			cv2.circle(cv_image, (cols/2,rows/2), 100, (0, 0, 255), 10)
+		gray = cv2.cvtColor(cv_image, cv2.COLOR_BGR2GRAY)
+		
+		sign = sign_cascade.detectMultiScale(gray, 1.01, 1, minSize=(100,100))
+		
+		for (x,y,w,h) in sign:
+			cv2.rectangle(cv_image,(x,y),(x+w,y+h),(255,0,0),2)
+		
 		# ===================
 
 		#Convert CV image to ROS image and publish
