@@ -9,13 +9,14 @@ if __name__ == '__main__':
 
 	ip = ImageProcessor()
 
-	rospy.loginfo("Processing images...")
+	rospy.loginfo("[IMG] Processing images...")
 
 	# Loop here until quit
 	try:
 		rospy.spin()
-
 	except rospy.ROSInterruptException:
+		rospy.loginfo("[IMG] Processor shutting down")
+	finally:
 		# Shutdown
 		ip.shutdown()
 

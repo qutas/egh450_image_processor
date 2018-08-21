@@ -4,7 +4,7 @@ import sys
 import rospy
 import cv2
 from std_msgs.msg import String
-from sensor_msgs.msg import Image
+from sensor_msgs.msg import CompressedImage
 from cv_bridge import CvBridge, CvBridgeError
 
 # will need to change the location to your own environment
@@ -16,8 +16,8 @@ class ImageProcessor():
 		self.bridge = CvBridge()
 
 		# Set up the subscriber
-		self.sub_img = rospy.Subscriber('~image_input', Image, self.callback_img)
-		self.pub_img = rospy.Publisher('~image_output', Image, queue_size=1)
+		self.sub_img = rospy.Subscriber('~input/image_raw/compressed', CompressedImage, self.callback_img)
+		self.pub_img = rospy.Publisher('~output/image_raw/compressed', CompressedImage, queue_size=1)
 
 	def shutdown(self):
 		# Unregister anything that needs it here
@@ -26,7 +26,7 @@ class ImageProcessor():
 	def callback_img(self, msg_in):
 		#Convert ROS image to CV image
 		try:
-			cv_image = self.bridge.imgmsg_to_cv2( msg_in, "bgr8" )
+			cv_image = self.bridge.compressed_imgmsg_to_cv2( msg_in, "bgr8" )
 		except CvBridgeError as e:
 			print(e)
 
@@ -44,6 +44,6 @@ class ImageProcessor():
 
 		#Convert CV image to ROS image and publish
 		try:
-			self.pub_img.publish( self.bridge.cv2_to_imgmsg( cv_image, "bgr8" ) )
+			self.pub_img.publish( self.bridge.cv2_to_compressed_imgmsg( cv_image ) )
 		except CvBridgeError as e:
 			print(e)
